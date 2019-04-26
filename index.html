@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+    </head>
+    <body>
+        <script>
+            var canvas = document.createElement("canvas");
+
+            var gl = canvas.getContext("webgl");
+            if (gl == null) {
+                throw "WebGL not supported.";
+            }
+
+            var ext = gl.getExtension("OES_texture_float");
+            if (ext == null) {
+                throw "OES_texture_float not supported.";
+            }
+
+            var texture = gl.createTexture();
+            gl.bindTexture(gl.TEXTURE_2D, texture);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 2, 2, 0, gl.RGBA, gl.FLOAT, null);
+            var error = gl.getError()
+            if (error != gl.NO_ERROR) {
+                console.log("Error creating floating-point texture:", error);
+                throw "Failed to create floating-point texture."
+            }
+
+            var fb = gl.createFramebuffer();
+            gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+            gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+            var result = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
+            if (result == gl.FRAMEBUFFER_COMPLETE) {
+                document.body.appendChild(document.createTextNode("✅ Framebuffer complete!"));
+                console.log("✅ Framebuffer complete!");
+            } else {
+                document.body.appendChild(document.createTextNode("❌ Framebuffer not complete..."));
+                console.log("❌ Framebuffer not complete...");
+            }
+            console.log("Framebuffer status: 0x" + result.toString(16));
+        </script>
+    </body>
+</html>
