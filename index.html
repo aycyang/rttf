@@ -11,10 +11,17 @@
                 throw "WebGL not supported.";
             }
 
-            var ext = gl.getExtension("OES_texture_float");
-            if (ext == null) {
+            var texture_float_ext = gl.getExtension("OES_texture_float");
+            if (texture_float_ext == null) {
                 throw "OES_texture_float not supported.";
             }
+            console.log(texture_float_ext)
+
+            var color_buffer_float_ext = gl.getExtension("WEBGL_color_buffer_float");
+            if (color_buffer_float_ext == null) {
+                throw "WEBGL_color_buffer_float not supported.";
+            }
+            console.log(color_buffer_float_ext)
 
             var texture = gl.createTexture();
             gl.bindTexture(gl.TEXTURE_2D, texture);
